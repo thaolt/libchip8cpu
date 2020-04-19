@@ -388,7 +388,7 @@ int _chip8cpu_opcode_handler_E(chip8cpu* cpu) {
 int _chip8cpu_opcode_handler_F(chip8cpu* cpu) {
     switch (cpu->opcode & 0x00FF) {
     case 0x0007: /* FX07: Sets VX to the value of the delay timer */
-        cpu->V[(cpu->opcode & 0x0F00) >> 8] = _chip8cpu_timer_delay_get(cpu);;
+        cpu->V[(cpu->opcode & 0x0F00) >> 8] = cpu->delay_get(cpu);
         cpu->pc += 2;
         break;
     case 0x000A: /* FX0A: A key press is awaited, and then stored in VX. (blocking) */
@@ -401,11 +401,11 @@ int _chip8cpu_opcode_handler_F(chip8cpu* cpu) {
         }
         break;
     case 0x0015: /* FX15: Sets the delay timer to VX */
-        _chip8cpu_timer_delay_set(cpu, cpu->V[(cpu->opcode & 0x0F00) >> 8]);
+        cpu->delay_set(cpu, cpu->V[(cpu->opcode & 0x0F00) >> 8]);
         cpu->pc += 2;
         break;
     case 0x0018: /* FX18: Sets the sound timer to VX */
-        _chip8cpu_timer_sound_set(cpu, cpu->V[(cpu->opcode & 0x0F00) >> 8]);
+        cpu->sound_set(cpu, cpu->V[(cpu->opcode & 0x0F00) >> 8]);
         cpu->pc += 2;
         break;
     case 0x001E: /* FX1E: Add VX to I register */
